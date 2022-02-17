@@ -2,10 +2,6 @@ import requests, csv
 from bs4 import BeautifulSoup
 
 # import pdb;pdb.set_trace()
-# region and county code here
-
-URL = "http://www.ukaccountingfirms.co.uk/bishop-auckland/"
-page = requests.get(URL)
 
 class FirmInfo:
   def __init__(self, name, addressRegion, county, town, number, url):
@@ -17,12 +13,24 @@ class FirmInfo:
     self.url = url.text.strip()
 
 
+def getfirmurl
+  URL = "http://www.ukaccountingfirms.co.uk/sitemap.xml"
+  sitemap = requests.get(URL)
+  soup = BeautifulSoup(sitemap.content, "xml.parser")
+
+
+  # read xml for urls
+  # save into a list(?)
+  # export
+
+
 def getfirm():
+
   firminfos = []
-  soup = BeautifulSoup(page.content, "html.parser")
   firm_cards = soup.find_all(class_="card")
 
   for firm_card in firm_cards:
+
     firm_name = firm_card.find("span", itemprop="name")
     firm_addressRegion = firm_card.find("span", itemprop="addressRegion")
     firm_county = firm_card.find("a", href="/county-durham/")
@@ -34,7 +42,6 @@ def getfirm():
       firm_url
     )
     firminfos.append(firminfo)
-
   return firminfos
 
 
@@ -45,12 +52,3 @@ if __name__ == '__main__':
       firm.name, firm.addressRegion , firm.county, firm.town, firm.number,
       firm.url
     )
-    print(f'Name: {firm.name},\nCounty: {firm.county}')
-
-
-
-
-# for each region's countys, find each town's firms card
-# for each card find the name, region, county, town, number, description
-# save in a database
-# export database to .csv
